@@ -13,7 +13,7 @@
 #include <fcntl.h>
 #include <poll.h>
 
-#define DX 1e-9
+#define DX 5e-10
 
 struct arg {
 	double from;

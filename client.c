@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <stdlib.h>
 #include <math.h>
 #include <poll.h>
@@ -227,6 +228,14 @@ struct connection *setup_connections(int *count) {
 			continue;
 		}
 
+		int turn_option_on = 1;
+		int cnt = 5;
+		int idle = 5;
+		int intvl = 1;
+		setsockopt(sk, SOL_SOCKET, SO_KEEPALIVE, &turn_option_on, sizeof(turn_option_on));
+		setsockopt(sk, IPPROTO_TCP, TCP_KEEPCNT, &cnt, sizeof(cnt));
+		setsockopt(sk, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
+		setsockopt(sk, IPPROTO_TCP, TCP_KEEPINTVL, &intvl, sizeof(intvl));
 		add_entry(&conns, count, i);
 		conns[i].addr = server_addr;
 		conns[i].sk = sk;
